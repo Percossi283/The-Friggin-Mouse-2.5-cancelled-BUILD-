@@ -20,7 +20,7 @@ class PauseSubState extends MusicBeatSubstate
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	var menuItems:Array<String> = [];
-	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty' #if android, 'Chart Editor' #end, 'Exit to menu'];
+	var menuItemsOG:Array<String> = ['Resume', 'Restart The Song', 'Change The Difficulty', 'Exit To Frickin menu'];
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
@@ -52,6 +52,7 @@ class PauseSubState extends MusicBeatSubstate
 			menuItemsOG.insert(4 + num, 'Toggle Practice Mode');
 			menuItemsOG.insert(5 + num, 'Toggle Botplay');
 		}
+		if (mobile.MobileControls.enabled) menuItemsOG.insert(2, 'Chart Editor');
 		menuItems = menuItemsOG;
 
 		for (i in 0...CoolUtil.difficulties.length) {
@@ -134,17 +135,8 @@ class PauseSubState extends MusicBeatSubstate
 		regenMenu();
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
-		#if android
-		if (PlayState.chartingMode)
-		{
-		        addVirtualPad(FULL, A);
-		}
-		else
-		{
-		        addVirtualPad(UP_DOWN, A);
-		}
-		addPadCamera();
-		#end
+		addVirtualPad(PlayState.chartingMode ? LEFT_FULL : UP_DOWN, A);
+		addVirtualPadCamera();
 	}
 
 	var holdTime:Float = 0;
@@ -239,6 +231,8 @@ class PauseSubState extends MusicBeatSubstate
 				case "Leave Charting Mode":
 					restartSong();
 					PlayState.chartingMode = false;
+				case 'Chart Editor':
+					PlayState.instance.openChartEditor();
 				case 'Skip Time':
 					if(curTime < Conductor.songPosition)
 					{
@@ -263,9 +257,6 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.instance.botplayTxt.visible = PlayState.instance.cpuControlled;
 					PlayState.instance.botplayTxt.alpha = 1;
 					PlayState.instance.botplaySine = 0;
-                                case 'Chart Editor':
-		                        MusicBeatState.switchState(new editors.ChartingState());
-		                        PlayState.chartingMode = true;
 				case "Exit to menu":
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;

@@ -23,31 +23,21 @@ class FlashingState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
-		#if android
+		final buttonBack:String = mobile.MobileControls.enabled ? 'B' : 'ESCAPE';
+		final buttonAccept:String = mobile.MobileControls.enabled ? 'A' : 'ENTER';
+
 		warnText = new FlxText(0, 0, FlxG.width,
-			"Hey, watch out!\n
-			Be careful when you touch the phone fast!\n
-			You can break your phone screen if you do that,also\n
-			This Mod contains some flashing lights!\n
-			Press A to disable them now or go to Options Menu.\n
-			Press B to ignore this message.\n
-			You've been warned!",
+			'FNF vs Friggin Mouse Disclaimer Boi!\n
+			well play then or friggin nouse will destroy u and phone data\n
+			Press $buttonAccept so you can play them.\n
+			Press $buttonBack to ignore this message.\n
+			You\'ve been warned',
 			32);
-		#else
-		warnText = new FlxText(0, 0, FlxG.width,
-			"Hey, watch out!\n
-			This Mod contains some flashing lights!\n
-			Press ENTER to disable them now or go to Options Menu.\n
-			Press ESCAPE to ignore this message.\n
-			You've been warned!",
-			32);
-		#end
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
-                #if android
-                addVirtualPad(NONE, A_B);
-                #end
+
+		addVirtualPad(NONE, A_B);
 	}
 
 	override function update(elapsed:Float)
